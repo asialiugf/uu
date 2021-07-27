@@ -1,0 +1,6 @@
+// the configured options and settings for Uquant
+#define Uquant_VERSION_MAJOR @Uquant_VERSION_MAJOR@
+#define Uquant_VERSION_MINOR @Uquant_VERSION_MINOR@
+#define Uquant_VERSION_MINOR @Uquant_VERSION_PATCH@
+//#define Uquant_VERSION_MINOR @Uquant_VERSION_TWEAK@
+#define Uquant_VERSION @Uquant_VERSION_MAJOR@.@Uquant_VERSION_MINOR@.@Uquant_VERSION_PATCH@
