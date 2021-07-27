@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <p>ping test!!!</p>
+  <script type="text/javascript">
+    // -------------------------------websocket
+
+    // new Websocket
+    var s = new WebSocket('ws://47.93.37.54:80/api/push/ws');
+    var tq = new WebSocket('ws://127.0.0.1:7777');
+
+    // register my topic
+    s.onopen = function()
+    {
+      this.send('{"action":"subs","stamp":"x","data":["TA703","TA705"]}');
+      //this.send('{"action":"subs","stamp":"x","data":["TA701"]}');
+    }
+
+    s.onmessage = function(v)
+    {
+      console.log("haha")
+      console.log(v.data)
+    }
+
+    tq.onmessage = function(v)
+    {
+      s.send(v.data)
+      console.log("data")
+    }
+    tq.onopen = function()
+    {
+      this.send('{"aid": "subscribe_quote","ins_list":"cu1801,a1801"}')
+        //this.send('{"action":"subs","stamp":"x","data":["TA701"]}');
+    }
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+CCFLAGS =  -std=c++11 -O3 -fPIC  -luWS -lssl -lz -lpthread -lcjson -Wunused-result
+LIBPATH = -L/home/riddle/uws -L ./ -L ../../u/lib -L ../lib/seetalib-1.0.0/lib
+
+ALLLIBS = -luBEE -luWS -lssl -lz -lpthread -lcjson -lpq -lsee_talib
+
+CTPLIBS:= ../ctp/thostmduserapi.so \
+        ../ctp/thosttraderapi.so
+
+EXE = ../../u/exe/
+
+SRC = ./
+INC = ../inc/
+OBJ = ../../u/obj/
+
+INCS = -I ../inc -I ./ \
+       -I ../lib/seetalib-1.0.0/include \
+       -I /usr/include \
+       -I /usr/local/include \
+	   -I /usr/include/postgresql
+
+default:  exes
+
+exes: $(EXE)main.x \
+	t1.x
+
+MAINOBJS:= \
+	$(OBJ)Main.o \
+	$(OBJ)Index.o 
+
+T1OBJS:= \
+	$(OBJ)t1.o \
+	$(OBJ)Index.o 
+
+$(EXE)main.x: $(MAINOBJS)
+	$(CXX) $(CCFLAGS) -o $(EXE)main.x $(MAINOBJS) $(LIBPATH) $(ALLLIBS) $(CTPLIBS)
+
+$(EXE)t1.x: $(T1OBJS)
+	$(CXX) $(CCFLAGS) -o $(EXE)t1.x $(T1OBJS) $(LIBPATH) $(ALLLIBS) $(CTPLIBS)
+
+$(OBJ)Main.o: $(SRC)Main.cpp
+	$(CXX) -c $(CCFLAGS) $(INCS) -o $(OBJ)Main.o  $(SRC)Main.cpp
+
+$(OBJ)Index.o: $(SRC)Index.cpp
+	$(CXX) -c $(CCFLAGS) $(INCS) -o $(OBJ)Index.o  $(SRC)Index.cpp
+
+$(OBJ)t1.o: $(SRC)t1.cpp
+	$(CXX) -c $(CCFLAGS) $(INCS) -o $(OBJ)t1.o  $(SRC)t1.cpp
+

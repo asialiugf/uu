@@ -1,0 +1,392 @@
+#include "uBEE.h"
+#include "SigSlot.h"
+#include "Base.h"
+#include "Bars.h"
+#include "ApiFun.h"
+#include <cjson/cJSON.h>
+#include <iostream>
+#include <thread>
+#include <unistd.h>
+#include <algorithm>
+#include <vector>
+
+namespace uBEE
+{
+using lSignal::Connection;
+using lSignal::Signal;
+using lSignal::Slot;
+
+Base::Base():cs(100,nullptr)       // constructor  new thread fot getting data APIs.
+{
+  Mode         = 4;
+  data         = &DT;
+  tick         = &TK;
+  InstrumentID = data->InstrumentID;
+  TradingDay   = data->TradingDay;
+  ActionDay    = data->ActionDay;
+  for(int i=0; i<50; ++i) {
+    bars[i] = nullptr ;
+  }
+
+  std::thread t(&Base::AssiHubInit,this);
+  t.detach();
+  usleep(1000000); // should wait for thread ready
+}
+
+/*
+  策略主进程 要调用 Base::FuInit()，针对每个需要处理的合约，初始化，并放在一个map中，M_Fu.insert()。
+  M_Fu 是 Base的成员变量。
+*/
+void Base::FuInit(const std::map<std::string,std::vector<int>> *M)
+{
+  int i =0;
+  for(auto it = (*M).begin(); it != (*M).end(); ++it) {    // for strategy ... future
+    std::cout << it->first << std::endl;
+    uBEE::sFuBo *fu = new uBEE::sFuBo(it->first) ;
+    for(auto iter = it->second.cbegin(); iter != it->second.cend(); iter++) {
+      std::cout << *iter << std::endl;
+      i = 0;
+      //std::map<std::string,int>::const_iterator itt;
+      for(auto itt = M_FF.begin(); itt != M_FF.end(); ++itt) {    // all periods defined in M_FF <bars.h>
+        if(*iter == itt->second) {
+          fu->iP[i] = *iter ;
+          fu->pBars[i] = new sOHLC() ;
+          std::cout << "i:" << i << "  ip:" << *iter << std::endl;
+          break;
+        }
+        i++;
+      }
+    }
+    std::cout << "befor insert !!!\n" ;
+    //M_Fu.insert(std::pair<std::string,uBEE::sFuBo>(it->first, *fu));
+    MFuBo.insert(std::pair<std::string,uBEE::sFuBo *>(it->first, fu));
+  }  // ---- (*M).begin()
+}
+
+//----------------------------------------
+int Base::GetFrequencyIdx(int f)
+{
+  int i = 0;
+  std::map<std::string,int>::const_iterator itt;
+  for(itt = M_FF.begin(); itt != M_FF.end(); ++itt) {    // all periods defined in M_FF <bars.h>
+    if(f == itt->second) {
+      break;
+    }
+    i++;
+  }
+  if(itt == M_FF.end()) {
+    return -1;
+  }
+  return i;
+}
+//----------------------------------------
+
+
+void Base::Init()
+{
+
+}
+
+void Base::onInit(std::function<void()> handler)
+{
+  Base::onInitHandler = handler;
+}
+
+
+void Base::onTick(std::function<void(sTick *)> handler)
+{
+  Base::onTickHandler = handler;
+}
+
+void Base::onBars(std::function<void(sKbar *[],int)> handler)
+{
+  Base::onBarsHandler = handler;
+}
+
+void Base::onMessageInit()
+{
+  mainHub.onMessage([this](uWS::WebSocket<uWS::CLIENT> *ws, char *data, size_t length, uWS::OpCode opCode) {
+
+    map<std::string,uBEE::sFuBo>::iterator it;
+
+    switch(*((int*)data)) {
+    case T_TICK:
+      memcpy((char *)this->tick,data,length);
+      it = this->M_Fu.find(this->tick->InstrumentID);
+      if(it != this->M_Fu.end()) {
+        this->fu = &it->second ;
+        this->onTickHandler(this->tick);
+      }
+      break;
+    case T_BARS:
+      memcpy((char *)this->data,data,length);
+      it = this->M_Fu.find(this->data->InstrumentID);
+      if(it != this->M_Fu.end()) {
+        //it->second
+        //--------------- deal bars --------------------------
+        int j = 0;
+        for(int i=0; i<this->data->iN; ++i) {
+          if(it->second.iP[ this->data->KK[i].iX ] == this->data->KK[i].iF) {
+            this->bars[j] = (sKbar *)&this->data->KK[i] ;
+            // todo 更新各种指标......
+            it->second.pBars[ this->data->KK[i].iX ]->Insert(this->bars[j]);
+            it->second.Update[ this->data->KK[i].iX ]();
+            ++j ;
+          }
+        }
+        if(j>0) {
+          this->fu = &it->second ;
+          this->onBarsHandler(this->bars,j);
+        }
+      } // -----  end if(it != this->M_Fu.end())
+      break;
+    case T_UPDATE:
+      memcpy((char *)this->data,data,length);
+      it = this->M_Fu.find(this->data->InstrumentID);
+      if(it != this->M_Fu.end()) {
+        //it->second
+        //--------------- deal bars --------------------------
+        int j = 0;
+        for(int i=0; i<this->data->iN; ++i) {
+          if(it->second.iP[ this->data->KK[i].iX ] == this->data->KK[i].iF) {
+            this->bars[j] = (sKbar *)&this->data->KK[i] ;
+            // todo 更新各种指标......
+            it->second.pBars[ this->data->KK[i].iX ]->Update(this->bars[j]);
+            it->second.Update[ this->data->KK[i].iX ]();
+            ++j ;
+          }
+        }
+        if(j>0) {
+          this->fu = &it->second ;
+          this->onBarsHandler(this->bars,j);
+        }
+      } // -----  end if(it != this->M_Fu.end())
+      // todo !!
+      // send to websocket web browser !
+      break;
+    default:
+      break;
+    }
+
+
+    /*
+    if(*((int*)data) ==0) {
+      memcpy((char *)this->tick,data,length);
+      std::cout << this->tick->InstrumentID << this->tick->UpdateTime << std::endl ;
+
+      it = this->M_Fu.find(this->tick->InstrumentID);
+      if(it != this->M_Fu.end()) {
+
+        snprintf(ca_errmsg,ERR_MSG_LEN,"T:%s %s %06d S:%d A:%s H:%g L:%g LP:%g AP:%g AV:%d BP:%g BV:%d OI:%g V:%d",
+                 this->tick->TradingDay,   this->tick->UpdateTime,
+                 this->tick->UpdateMillisec*1000, 0,            this->tick->ActionDay,
+                 this->tick->HighestPrice, this->tick->LowestPrice,   this->tick->LastPrice,
+                 this->tick->AskPrice1,    this->tick->AskVolume1,
+                 this->tick->BidPrice1,    this->tick->BidVolume1,
+                 this->tick->OpenInterest, this->tick->Volume);
+        std::cout << ca_errmsg <<std::endl;
+
+        this->onTickHandler(this->tick);
+      }
+    }
+    */
+
+    /*
+    if(*((int*)data) ==0) {
+      memcpy((char *)this->tick,data,length);
+      it = this->M_Fu.find(this->tick->InstrumentID);
+      if(it != this->M_Fu.end()) {
+        this->onTickHandler(this->tick);
+      }
+    } else {
+      memcpy((char *)this->data,data,length);
+    }
+
+    it = this->M_Fu.find(this->data->InstrumentID);
+    if(it != this->M_Fu.end()) {
+      //it->second
+      //--------------- deal tick --------------------------
+      //--------------- deal bars --------------------------
+      if(this->data->iN !=0) {
+        int j = 0;
+        for(int i=0; i<this->data->iN; ++i) {
+          std::cout<<"i:"<<i<<" "<<it->second.iP[ this->data->KK[i].iX ]<<" "<<"b:iX:";
+          std::cout<<this->data->KK[i].iX<<"iF:"<< this->data->KK[i].iF << std::endl;
+          if(it->second.iP[ this->data->KK[i].iX ] == this->data->KK[i].iF) {
+            this->bars[j] = (sKbar *)&this->data->KK[i] ;
+            ++j ;
+          }
+        }
+        if(j>0) {
+          this->onBarsHandler(this->bars,j);
+        }
+      } //---------------- end deal bars
+    } // -----  end if(it != this->M_Fu.end())
+    */
+
+    /*
+     case : weekend ==> change kkk;
+     case : monthend ==> do something;
+    */
+  });
+}
+
+void Base::Run()
+{
+  std::cout << "enter into Start !!\n";
+
+  this->onInitHandler();
+
+  mainHub.onConnection([this](uWS::WebSocket<uWS::CLIENT> *ws, uWS::HttpRequest req) {
+    switch((long) ws->getUserData()) {
+    case 1:
+      this->cs[1] = ws;
+      this->cw = ws;
+      break;
+    case 7:
+      this->cs[2] = ws;
+      this->cd = ws;
+      break;
+    case 2:
+      this->cs[2] = ws;
+      this->c_bck = ws;
+      break;
+    case 3:
+      this->cs[3] = ws;
+      this->c_ctp = ws;
+      break;
+    case 4:
+      this->cs[4] = ws;
+      this->c_sim = ws;
+      break;
+    default:
+      std::cout << "FAILURE: " << ws->getUserData() << " should not connect!" << std::endl;
+      exit(-1);
+    }
+    ws->send("hhhhhhhaaaaaaaaaa!!");
+  });
+
+  // 客户端打印接收到的消息
+  Base::onMessageInit();
+
+  mainHub.onDisconnection([this](uWS::WebSocket<uWS::CLIENT> *ws, int code, char *message, size_t length) {
+    auto result = find(this->cs.begin(), this->cs.end(), ws);     //查找 ws
+    if(result == this->cs.end()) {    //没找到
+      std::cout << "Not found" << std::endl;
+    } else {
+      std::cout << "YesYes!!" << std::endl;  //找到了
+      (*result) = nullptr ;
+      //ws->close();
+    }
+    std::cout << "code:"<< code << std::endl;
+    //this->mainHub.getDefaultGroup<uWS::SERVER>().close();
+    //this->mainHub.getDefaultGroup<uWS::CLIENT>().close();
+    switch((long) ws->getUserData()) {
+    case 1:
+      break;
+    case 5:
+      mainHub.connect("ws://localhost:3004",(void *) 4);  //  data server HubSim  //模拟
+      break;
+    }
+  });
+
+
+  switch(Mode) {
+  case 1:
+    break;
+  case 2:
+    mainHub.connect("ws://localhost:3002",(void *) 2);  //  data server HubCtp  //实盘
+    break;
+  case 3:
+    mainHub.connect("ws://localhost:3003",(void *) 3);  //  data server HubCtp  //实盘
+    break;
+  case 4:
+    mainHub.connect("ws://localhost:3004",(void *) 4);  //  data server HubSim  //模拟
+    break;
+  default:
+    mainHub.connect("ws://localhost:3004",(void *) 4);  //  data server HubSim  //模拟
+    break;
+  }
+
+  mainHub.connect("ws://localhost:3000",(void *) 1);  //  web server
+  mainHub.connect("ws://localhost:4000",(void *) 2);  //  data server
+  mainHub.connect("ws://localhost:5000",(void *) 3);  //  trading server
+  mainHub.run();
+  std::cout << "after run \n";
+  // 程序何时结束 ？？
+}
+
+void Base::AssiHubInit()
+{
+  assiHub.onConnection([this](uWS::WebSocket<uWS::CLIENT> *ws, uWS::HttpRequest req) {
+    switch((long) ws->getUserData()) {
+    case 0:
+      this->cs[0] = ws;
+      this->ca = ws;
+      break;
+    default:
+      std::cout << "FAILURE: " << ws->getUserData() << " should not connect!" << std::endl;
+      exit(-1);
+    }
+  });
+
+  assiHub.onDisconnection([this](uWS::WebSocket<uWS::CLIENT> *ws, int code, char *message, size_t length) {
+    assiHub.connect("ws://localhost:3001",(void *) 0); //传入 (void *) 0), onConnection会收到，再保存ws.
+  });
+
+  assiHub.onMessage([this](uWS::WebSocket<uWS::CLIENT> *ws, char *message, size_t length, uWS::OpCode opCode) {
+    char *tmp = new char[length+1];
+    char tmp1[256];
+    memcpy(tmp1, message, length);
+    tmp1[length] = 0;
+    //usleep(1000000);
+    printf("Client receive:%s\n", message);
+    this->m_Qbuf.push(tmp);     //将收到的:数据，传给主线程的get_tick() get_bars()之类的函数。
+    this->cv.notify_all();   //唤醒get_tick() get_bars()
+    //ws->send("-------fro assiHub ===");
+    //usleep(1000000);
+
+  });
+  // 连接到 HubApi
+  assiHub.connect("ws://localhost:3001",(void *) 0); //传入 (void *) 0), onConnection会收到，再保存ws.
+  assiHub.run();
+}
+
+//void Base::getFuTick(char *start_date, char *end_date)
+void Base::getFutureTick(const char *start_date, const char *end_date)
+{
+  // cs[0] 与 DataServer: HubAPI 相联系。
+  if(cs[0] == nullptr) {
+    std::cout<< " assistant Hub may not be initialed !!\n";
+    exit(-1);
+  }
+
+  // 将请求发给 DataServer: HubAPI。
+  // 这里的请求，有很多种，需要定义相关协议。
+  char cmd[512];
+  memset(cmd,'\0',512);
+  int iCode = API_GET_FUTURE_TICKS ;
+  sprintf(cmd,"%4d{\"Sdate\":\"%s\",\"Edate\":\"%s\"}",API_GET_FUTURE_TICKS,start_date,end_date);
+  std::cout << cmd << std::endl;
+  cs[0]->send(cmd);
+
+
+  //  等待 HubApi.cpp Dataserver 返回数据。
+  std::cout<< " go to sleep!! \n";
+  std::unique_lock <std::mutex> l(m_mtx);
+  cv.wait(l); // 这里要改成 timeout时间。
+  std::cout<< " waked!! \n";
+  char * tmp = m_Qbuf.front();
+  m_Qbuf.pop();
+  delete [] tmp;
+}
+
+void Base::getFutureBars(const char *period, const char *start_date, const char *end_date)
+{
+}
+void Base::getStockBars(const char *period, const char *start_date, const char *end_date)
+{
+}
+
+
+} //namespace

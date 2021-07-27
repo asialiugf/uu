@@ -1,0 +1,112 @@
+CPP_SHARED := -std=c++11 -O3 -shared -fPIC -I ../inc -I /usr/include -I /usr/local/include -I /usr/include/postgresql \
+Base.cpp Bars.cpp File.cpp Json.cpp Title.cpp FuList.cpp ErrLog.cpp Daemon.cpp HubApi.cpp HubCtp.cpp HubSim.cpp HubBck.cpp MdCtp.cpp MdSpi.cpp MkSim.cpp Global.cpp \
+Psqlpool.cpp PsqlFunc.cpp
+
+default:
+	make `(uname -s)`
+Linux:
+	$(CXX) $(CFLAGS) $(CPP_SHARED) -s -o libuBEE.so
+
+CC = g++
+CPPFLAGS =  -std=c++11 -O3
+CFLAGS =  -std=c++11 -O3 -fPIC  -luWS -lssl -lz -lpthread -lcjson -Wunused-result
+LIBPATH = -L/home/riddle/uws -L ./
+LINK =  $(CC)
+
+CTPLIBS:= ../ctp/thostmduserapi.so \
+        ../ctp/thosttraderapi.so
+
+EXE = ../../u/exe/
+
+SRC = ../src/
+INC = ../inc/
+OBJ = ../../u/obj/
+
+INCS = -I ../inc \
+       -I /usr/include \
+       -I /usr/local/include \
+	   -I /usr/include/postgresql
+
+DEPS = ../inc/Base.h \
+	    ../inc/Bars.h \
+	    ../inc/Echo.h \
+	    ../inc/Title.h \
+	    ../inc/FuList.h \
+	    ../inc/ErrLog.h \
+	    ../inc/Daemon.h \
+	    ../inc/HubCtp.h \
+	    ../inc/HubApi.h \
+	    ../inc/HubSim.h \
+	    ../inc/HubBck.h \
+	    ../inc/MdCtp.h \
+	    ../inc/MdSpi.h \
+	    ../inc/MkSim.h \
+        ../inc/Psqlpool.h \
+        ../inc/PsqlFunc.h \
+        ../inc/Roll.h \
+        ../inc/File.h \
+        ../inc/Json.h \
+        ../inc/strategy.h \
+        ../inc/uBEE.h
+
+build:  exes
+
+
+exes: $(EXE)dserver.x \
+	$(EXE)tqdata.x \
+	$(EXE)fugen.x \
+	$(EXE)wserver.x
+
+MAINOBJS:= \
+	$(OBJ)Main.o 
+
+DATASERVER:= \
+	$(OBJ)Dataserver.o 
+
+TQDATA:= \
+	$(OBJ)Tqdata.o 
+
+FUGEN:= \
+    $(OBJ)Base.o \
+    $(OBJ)File.o \
+    $(OBJ)Json.o \
+	$(OBJ)FuList.o \
+    $(OBJ)ErrLog.o \
+    $(OBJ)FuGen.o
+
+WEBSERVER:= \
+	$(OBJ)Base.o \
+	$(OBJ)File.o \
+    $(OBJ)ErrLog.o \
+	$(OBJ)Webserver.o 
+
+$(EXE)main.x: $(MAINOBJS)
+	$(CC) $(CPPFLAGS) -o $(EXE)main.x $(MAINOBJS) $(LIBPATH) -luWS -luBEE -lssl -lz -lpthread -lcjson 
+
+$(EXE)dserver.x: $(DATASERVER)
+	$(CC) $(CPPFLAGS) -o $(EXE)dserver.x $(DATASERVER) $(LIBPATH) -luWS -lMdApi -lTdApi -luBEE -lssl -lz -lpthread -lcjson -lpq -lMdApi -lTdApi
+
+$(EXE)tqdata.x: $(MAINOBJS)
+	$(CC) $(CPPFLAGS) -o $(EXE)tqdata.x $(TQDATA) $(LIBPATH) -luWS -luBEE -lssl -lz -lpthread -lcjson -lpq -lMdApi -lTdApi
+
+$(EXE)fugen.x: $(MAINOBJS)
+	$(CC) $(CPPFLAGS) -o $(EXE)fugen.x $(FUGEN) $(LIBPATH) -luWS -lMdApi -lTdApi -luBEE -lssl -lz -lpthread -lcjson
+
+$(EXE)wserver.x: $(MAINOBJS)
+	$(CC) $(CPPFLAGS) -o $(EXE)wserver.x $(WEBSERVER) $(LIBPATH) -luWS -luBEE -lssl -lz -lpthread -lcjson
+
+$(OBJ)Main.o: $(SRC)Main.cpp
+	$(CC) -c $(CPPFLAGS) $(INCS) -o $(OBJ)Main.o  $(SRC)Main.cpp -lcjson
+
+$(OBJ)FuGen.o: $(SRC)FuGen.cpp
+	$(CC) -c $(CPPFLAGS) $(INCS) -o $(OBJ)FuGen.o  $(SRC)FuGen.cpp
+
+$(OBJ)Dataserver.o: $(SRC)Dataserver.cpp
+	$(CC) -c $(CPPFLAGS) $(INCS) -o $(OBJ)Dataserver.o  $(SRC)Dataserver.cpp
+
+$(OBJ)Tqdata.o: $(SRC)Tqdata.cpp
+	$(CC) -c $(CPPFLAGS) $(INCS) -o $(OBJ)Tqdata.o  $(SRC)Tqdata.cpp
+
+$(OBJ)Webserver.o: $(SRC)Webserver.cpp
+	$(CC) -c $(CPPFLAGS) $(INCS) -o $(OBJ)Webserver.o  $(SRC)Webserver.cpp
+

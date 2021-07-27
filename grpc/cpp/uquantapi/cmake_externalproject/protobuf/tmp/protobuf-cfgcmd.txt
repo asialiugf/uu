@@ -1,0 +1,1 @@
+cmd='/usr/bin/cmake;-C/home/rabbit/uquant/grpc/cpp/helloworld/cmake_externalproject/protobuf/tmp/protobuf-cache-$<CONFIG>.cmake;-GUnix Makefiles;/home/rabbit/uquant/grpc/cpp/helloworld/cmake_externalproject/../../../../third_party/protobuf/cmake'

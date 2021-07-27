@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+</head>
+
+<body>
+
+  <p>ping test!!!</p>
+  <script type="text/javascript">
+    // -------------------------------websocket
+
+    // new Websocket
+    var s = new WebSocket('ws://47.93.37.54:80/api/push/ws');
+    var tq = new WebSocket('ws://127.0.0.1:7777');
+
+    // register my topic
+    s.onopen = function()
+    {
+      this.send('{"action":"subs","stamp":"x","data":["TA703","TA705"]}');
+      //this.send('{"action":"subs","stamp":"x","data":["TA701"]}');
+    }
+
+    s.onmessage = function(v)
+    {
+      tq.send(v.data)
+	  console.log(v.data)
+      console.log("haha")
+    }
+
+    tq.onmessage = function(v) {
+	  s.send(v.data)
+      console.log("data")
+    }
+
+    // ping/pong heartbeat
+    //job = setInterval('s.send(\'{"action":"test ping"}\')', 1000);
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+Performing C SOURCE FILE Test FLAG_SUPPORTED_stdc11 failed with the following output:
+Change Dir: /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_0b9d5/fast && /usr/bin/make -f CMakeFiles/cmTC_0b9d5.dir/build.make CMakeFiles/cmTC_0b9d5.dir/build
+make[1]: Entering directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_0b9d5.dir/src.c.o
+/usr/bin/cc   -DFLAG_SUPPORTED_stdc11   -std=c++11 -o CMakeFiles/cmTC_0b9d5.dir/src.c.o   -c /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp/src.c
+cc1: warning: command line option '-std=c++11' is valid for C++/ObjC++ but not for C
+Linking C executable cmTC_0b9d5
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0b9d5.dir/link.txt --verbose=1
+/usr/bin/cc  -DFLAG_SUPPORTED_stdc11    -rdynamic CMakeFiles/cmTC_0b9d5.dir/src.c.o  -o cmTC_0b9d5 
+make[1]: Leaving directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test FLAG_SUPPORTED_Wcomma failed with the following output:
+Change Dir: /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_73e7a/fast && /usr/bin/make -f CMakeFiles/cmTC_73e7a.dir/build.make CMakeFiles/cmTC_73e7a.dir/build
+make[1]: Entering directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_73e7a.dir/src.c.o
+/usr/bin/cc   -pedantic -Wall -Wextra -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wundef -Wswitch-default -Wconversion -Wc++-compat -fstack-protector-strong -DFLAG_SUPPORTED_Wcomma   -Wcomma -o CMakeFiles/cmTC_73e7a.dir/src.c.o   -c /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wcomma'; did you mean '-Wcomment'?
+make[1]: *** [CMakeFiles/cmTC_73e7a.dir/build.make:66: CMakeFiles/cmTC_73e7a.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_73e7a/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test FLAG_SUPPORTED_Wmissingvariabledeclarations failed with the following output:
+Change Dir: /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_18467/fast && /usr/bin/make -f CMakeFiles/cmTC_18467.dir/build.make CMakeFiles/cmTC_18467.dir/build
+make[1]: Entering directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_18467.dir/src.c.o
+/usr/bin/cc   -pedantic -Wall -Wextra -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wundef -Wswitch-default -Wconversion -Wc++-compat -fstack-protector-strong -Wdouble-promotion -Wparentheses -Wformat-overflow -Wunused-macros -DFLAG_SUPPORTED_Wmissingvariabledeclarations   -Wmissing-variable-declarations -o CMakeFiles/cmTC_18467.dir/src.c.o   -c /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wmissing-variable-declarations'; did you mean '-Wmissing-declarations'?
+make[1]: *** [CMakeFiles/cmTC_18467.dir/build.make:66: CMakeFiles/cmTC_18467.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_18467/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }
+Performing C SOURCE FILE Test FLAG_SUPPORTED_Wusedbutmarkedunused failed with the following output:
+Change Dir: /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_537b4/fast && /usr/bin/make -f CMakeFiles/cmTC_537b4.dir/build.make CMakeFiles/cmTC_537b4.dir/build
+make[1]: Entering directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_537b4.dir/src.c.o
+/usr/bin/cc   -pedantic -Wall -Wextra -Werror -Wstrict-prototypes -Wwrite-strings -Wshadow -Winit-self -Wcast-align -Wformat=2 -Wmissing-prototypes -Wstrict-overflow=2 -Wcast-qual -Wundef -Wswitch-default -Wconversion -Wc++-compat -fstack-protector-strong -Wdouble-promotion -Wparentheses -Wformat-overflow -Wunused-macros -DFLAG_SUPPORTED_Wusedbutmarkedunused   -Wused-but-marked-unused -o CMakeFiles/cmTC_537b4.dir/src.c.o   -c /home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp/src.c
+cc: error: unrecognized command line option '-Wused-but-marked-unused'
+make[1]: *** [CMakeFiles/cmTC_537b4.dir/build.make:66: CMakeFiles/cmTC_537b4.dir/src.c.o] Error 1
+make[1]: Leaving directory '/home/rabbit/uu/ext/seeta/build/CMakeFiles/CMakeTmp'
+make: *** [Makefile:121: cmTC_537b4/fast] Error 2
+
+
+Source file was:
+int main(void) { return 0; }

@@ -1,0 +1,6 @@
+#g++ -std=c++11 -O3 -I ../src -fPIC -o ud.x uq_data_server.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread -luuid
+#g++ -std=c++11 -O3 -I ../src -fPIC -o ut.x uq_trade_server.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread
+#g++ -std=c++11 -O3 -I ../src -fPIC -o uw.x uq_websock_server.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread
+#g++ -std=c++11 -O3 -I ../src -fPIC -o uw1.x uw1.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread
+#g++ -std=c++11 -O3 -I ../src -fPIC -o us.x uq_strategy.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread
+g++ -std=c++11 -O3 -I ../src -fPIC -o webdata.x webdata.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread ./obj/ErrLog.o

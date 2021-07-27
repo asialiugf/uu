@@ -1,0 +1,2 @@
+g++ -std=c++11 -O3 -I ../src -fPIC -o tccccc.x tc.cpp -L/home/riddle/uws -luWS -lssl -lz -lpthread
+

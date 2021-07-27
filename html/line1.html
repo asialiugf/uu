@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1024, height=768,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <title>线宽引起的误差</title>
+</head>
+
+<body>
+  <canvas width="600" height="600" style="background-color: #fafafa"></canvas>
+  <script>
+    var canvas = document.getElementsByTagName('canvas')[0];
+    //let canvas = document.querySelector('#canvas')
+    let ctx = canvas.getContext('2d')
+    let oldWidth = canvas.width
+    let oldHeight = canvas.height
+    let scaleRatio = window.devicePixelRatio
+    if (scaleRatio === 1.25)
+    {
+      scaleRatio = 4
+    }
+    canvas.width = oldWidth *2
+    canvas.height =  oldHeight *2
+    canvas.style.width = oldWidth + 'px'
+    canvas.style.height = oldHeight + 'px'
+    ctx.scale(scaleRatio, scaleRatio)
+    //ctx.translate(-0.5, -0.5)
+
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'green'
+	ctx.fillStyle = "black"
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const pixelMap = {
+      1: 0,
+      2: 0.5,
+      3: 1,
+      4: 0
+    }
+
+    ctx.beginPath()
+    ctx.moveTo(300, 8)
+    ctx.lineTo(300, 208)
+    ctx.lineTo(100.5, 108.5)
+    ctx.stroke()
+    ctx.lineWidth = 0.5
+    ctx.strokeStyle = 'red'
+    ctx.beginPath()
+    ctx.moveTo(20.5, 8.5)
+    ctx.lineTo(100.5, 108.5)
+    ctx.stroke()
+
+    ctx.lineWidth = 0.25
+    ctx.strokeStyle = 'blue'
+    ctx.beginPath()
+    ctx.moveTo(20.5, 106.5)
+    ctx.lineTo(100.5, 8.5)
+    ctx.stroke()
+  </script>
+</body>
+
+</html>

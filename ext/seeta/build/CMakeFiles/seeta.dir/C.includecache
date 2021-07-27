@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rabbit/uu/ext/seeta/inc/seeta.h
+
+/home/rabbit/uu/ext/seeta/src/seeta.c
+ctype.h
+-
+errno.h
+-
+sys/time.h
+-
+time.h
+-
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+unistd.h
+-
+fcntl.h
+-
+../inc/seeta.h
+/home/rabbit/uu/ext/seeta/inc/seeta.h
+

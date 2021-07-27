@@ -1,0 +1,287 @@
+<html>
+
+<head>
+  <!--  <script src="vue.js"></script> -->
+  <script src="fincharts.js">
+  </script>
+</head>
+
+<body>
+  <ul id="test">
+    <li> item 1 </li>
+    <li> item 2 </li>
+    <li> item 3 </li>
+  </ul>
+</body>
+
+<canvas id="cvs" width="1200" height="600" style="position:absolute;background-color:transparent;"> A Drawing of something </canvas>
+
+<script>
+  'use strict';
+</script>
+
+<script>
+  function round(d)
+  {
+    return Math.round(100 * d) / 100;
+  }
+
+  let dateData = [];
+  let ohlcData = [];
+  let oo = [];
+  let hh = [];
+  let ll = [];
+  let cc = [];
+  let mm = [];
+  let volumeData = [];
+  let date = new Date(2010, 0, 1);
+  let high = Math.random() * 40;
+  let open = high - Math.random();
+  let low = open - Math.random();
+  let close = (high - low) * Math.random() + low;
+  let volume = 100 + 15 * Math.random();
+  dateData.push(date);
+  ohlcData.push([round(high) + 1000, round(low) + 1000, round(close) +
+    1000,
+    round(open) + 1000
+  ]);
+  oo.push(round(close) + 1000);
+  hh.push(round(high) + 1000);
+  ll.push(round(low) + 1000);
+  cc.push(round(open) + 1000);
+  mm.push(round(open) + 1000);
+  volumeData.push(round(volume) + 1000);
+
+  for (let day = 2; day <= 3000; day++)
+  {
+    date = new Date(2010, 0, day);
+    high = open + Math.random();
+    open = high - Math.random();
+    low = open - Math.random();
+    let oldOpen = open;
+    close = (high - low) * Math.random() + low;
+    if (low > oldOpen)
+    {
+      low = oldOpen;
+    }
+    volume = volume + 10 * Math.random() - 5;
+    dateData.push(date);
+    ohlcData.push([round(high) + 1000, round(low) + 1000, round(close) +
+      1000,
+      round(open) + 1000
+    ]);
+    oo.push(round(close) + 1000);
+    hh.push(round(high) + 1000);
+    ll.push(round(low) + 1000);
+    cc.push(round(open) + 1000);
+    mm.push(round(open) + 1000);
+    volumeData.push(round(volume) + 1000);
+  }
+
+  let option = {
+    type: 0,
+    X:
+    {
+      data: [
+      {
+        x: dateData
+      },
+      {
+        x: dateData
+      }]
+    },
+    Y:
+    {
+      data: [
+      {
+        title: '中国联通',
+        type: 'candle',
+        position: 'main',
+        kedu: [],
+        x: 2,
+        y: [
+        {
+          type: 'o',
+          data: oo
+        },
+        {
+          type: 'h',
+          data: hh
+        },
+        {
+          type: 'l',
+          data: ll
+        },
+        {
+          type: 'c',
+          data: cc
+        },
+        {
+          title: 'MA5',
+          type: 'line',
+          data: mm
+        }]
+      },
+      {
+        title: 'Vol',
+        position: 'sub',
+        kedu: [],
+        x: 3,
+        y: [
+        {
+          type: 'bar',
+          data: volumeData
+        },
+        {
+          type: 'line',
+          data: [1, 1] // ma5
+        }]
+      },
+      {
+        title: 'MACD',
+        position: 'sub',
+        y: [
+        {
+          title: 'diff',
+          type: 'line',
+          data: oo
+        },
+        {
+          title: 'dea',
+          type: 'line',
+          data: cc
+        }]
+      }]
+    }
+  };
+
+  let ooo = [];
+  let hhh = [];
+  let ccc = [];
+  let lll = [];
+  let mmm = [];
+
+  for (let i = 0; i < 1; i++)
+  {
+    ooo.push(oo[i]);
+    hhh.push(hh[i]);
+    lll.push(ll[i]);
+    ccc.push(cc[i]);
+  }
+
+  let option1 = {
+    type: 1,
+    X:
+    {
+      data: [
+      {
+        x: dateData
+      },
+      {
+        x: dateData
+      }]
+    },
+    Y:
+    {
+      data: [
+      {
+        title: '中国联通',
+        type: 'candle',
+        position: 'main',
+        kedu: [],
+        x: 2,
+        y: [
+        {
+          type: 'o',
+          data: ooo
+        },
+        {
+          type: 'h',
+          data: hhh
+        },
+        {
+          type: 'l',
+          data: lll
+        },
+        {
+          type: 'c',
+          data: ccc
+        },
+        {
+          title: 'MA5',
+          type: 'line',
+          data: mmm
+        }]
+      },
+      {
+        title: 'Vol',
+        position: 'sub',
+        kedu: [],
+        x: 3,
+        y: [
+        {
+          type: 'bar',
+          data: volumeData
+        },
+        {
+          type: 'line',
+          data: [1, 1] // ma5
+        }]
+      },
+      {
+        title: 'MACD',
+        position: 'sub',
+        y: [
+        {
+          title: 'diff',
+          type: 'line',
+          data: ooo
+        },
+        {
+          title: 'dea',
+          type: 'line',
+          data: ccc
+        }]
+      }]
+    }
+  };
+
+
+
+  //let cvs = document.getElementById('cvs');
+  let op = new barCharts(option);
+
+  let i = 0;
+
+  function zz()
+  {
+    ooo.length = 0;
+    hhh.length = 0;
+    lll.length = 0;
+    ccc.length = 0;
+    mmm.length = 0;
+    ooo.push(oo[i]);
+    hhh.push(hh[i]);
+    lll.push(ll[i]);
+    ccc.push(cc[i]);
+    mmm.push(mm[i]);
+    i++;
+    if (i % 2 == 0)
+    {
+      option1.type = 2;
+    }
+    else
+    {
+      option1.type = 2;
+    }
+    //option1.type = 2;
+    console.log("ooo: " + ooo + " hhh: " + hhh + " lll: " + lll +
+      " ccc: " + ccc);
+    //alert("update!!!!");
+    op.upd(option1);
+    //alert("after");
+  }
+  setInterval(zz, 500);
+</script>
+
+</html>

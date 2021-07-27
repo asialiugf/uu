@@ -1,0 +1,4 @@
+sed -i '/status/d'  zn1811
+sed -i 's/\t//g'  zn1812
+sed -i ':a;N;$!ba;s/{\n/{/g' zn1812
+sed -i ':a;N;$!ba;s/,\n/,/g' zn1812

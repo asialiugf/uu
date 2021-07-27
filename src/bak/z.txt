@@ -1,0 +1,10 @@
+        /*
+        snprintf(ca_errmsg,ERR_MSG_LEN,"T:%s %s %06d S:%d A:%s H:%g L:%g LP:%g AP:%g AV:%d BP:%g BV:%d OI:%g V:%d",
+                 this->tick->TradingDay,   this->tick->UpdateTime,
+                 this->tick->UpdateMillisec*1000, 0,            this->tick->ActionDay,
+                 this->tick->HighestPrice, this->tick->LowestPrice,   this->tick->LastPrice,
+                 this->tick->AskPrice1,    this->tick->AskVolume1,
+                 this->tick->BidPrice1,    this->tick->BidVolume1,
+                 this->tick->OpenInterest, this->tick->Volume);
+        std::cout << ca_errmsg <<std::endl;
+        */
