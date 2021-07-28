@@ -1,0 +1,11 @@
+prefix=/home/rabbit/uu/uquant/extern/cJSON-1.7.0/install
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: libcjson
+Version: 1.7.0
+Description: Ultralightweight JSON parser in ANSI C
+URL: https://github.com/DaveGamble/cJSON
+Libs: -L${libdir} -lcjson
+Libs.Private: -lm
+Cflags: -I${includedir}

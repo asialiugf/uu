@@ -73,3 +73,7 @@ root@d:/usr/local/ctp# cp *.so ../lib
 root@d:/usr/local/ctp# cp *.h ../include
 root@d:/usr/local/ctp# 
 ```
+```
+/extern/cJSON-1.7.0/build$ cmake .. -DCMAKE_INSTALL_PREFIX=../install
+/extern/uws$ make PREFIX=./install install
+```

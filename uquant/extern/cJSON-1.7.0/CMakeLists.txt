@@ -108,6 +108,10 @@ endforeach()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${supported_compiler_flags}")
 
 #variables for pkg-config
+
+message("--------------------------------------- ${CMAKE_INSTALL_PREFIX}")
+message("--------------------------------------- ${CMAKE_INSTALL_LIBDIR}")
+
 set(prefix "${CMAKE_INSTALL_PREFIX}")
 set(libdir "${CMAKE_INSTALL_LIBDIR}")
 set(version "${PROJECT_VERSION}")

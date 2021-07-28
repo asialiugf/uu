@@ -43,12 +43,12 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # or :
-set_target_properties(myTarget
-    PROPERTIES
-        CXX_STANDARD 11
-        CXX_STANDARD_REQUIRED YES
-        CXX_EXTENSIONS NO
-)
+#set_target_properties(myTarget
+#    PROPERTIES
+#        CXX_STANDARD 11
+#        CXX_STANDARD_REQUIRED YES
+#        CXX_EXTENSIONS NO
+#)
 
 
 macro(add_headers_and_sources prefix common_path)
@@ -64,14 +64,16 @@ message("${Green} -------- Uquant  -----------  ${ColourReset}")
 
 
 set (CONFIG_VERSION ${CMAKE_CURRENT_BINARY_DIR}/Common/config_version.h)
-configure_file (Common/config.h.in ${CONFIG_COMMON})
+configure_file (src/Common/Version.h.in Version.h)
 
 
-add_subdirectory (extern EXCLUDE_FROM_ALL)
+#add_subdirectory (extern EXCLUDE_FROM_ALL)
 #add_subdirectory (base)
 add_subdirectory (src)
 add_subdirectory (tests)
 #add_subdirectory (utils)
 
+include(./cmake/cJSON.cmake)
 
-
+message("ccccccccccccccccc=  ${cJSON_DIR}")
+message("------${CJSON_INCLUDE_DIR}")
