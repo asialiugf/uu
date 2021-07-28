@@ -1,2 +1,0 @@
-/usr/bin/ar qc libseeta.a CMakeFiles/seeta.dir/src/seeta.cxx.o
-/usr/bin/ranlib libseeta.a

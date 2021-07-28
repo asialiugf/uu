@@ -1,4 +1,0 @@
-/home/rabbit/uu/uquant/extern/seeta/install/lib/libseeta.a
-/home/rabbit/uu/uquant/extern/seeta/install/include/seeta.h
-/home/rabbit/uu/uquant/extern/seeta/install/lib/cmake/seeta/seeta-config.cmake
-/home/rabbit/uu/uquant/extern/seeta/install/lib/cmake/seeta/seeta-config-noconfig.cmake
