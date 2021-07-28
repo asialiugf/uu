@@ -1,4 +1,4 @@
-#include "../ctp/ThostFtdcMdApi.h"
+#include "ThostFtdcMdApi.h"
 #include <uWS/uWS.h>
 #include "MdSpi.h"
 #include "Bars.h"

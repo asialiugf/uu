@@ -1,4 +1,4 @@
-#include "../ctp/ThostFtdcMdApi.h"
+#include "ThostFtdcMdApi.h"
 #include "FuList.h"
 #include "Bars.h"
 //#include "Psqlpool.h"
