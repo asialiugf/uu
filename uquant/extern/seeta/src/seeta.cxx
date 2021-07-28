@@ -7,10 +7,12 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include "../inc/seeta.h"
+#include "seeta.h"
 
 //char errmsg[1024] ;
 //char tmpmsg[1024] ;
+
+namespace uBEE {
 
 #define PREFLAG if( H[i]==L[i] ) { \
                     if( C[i]>=H[i-1] && C[i]>L[i-1] ) { *preF=1;  }else{ \
@@ -504,3 +506,4 @@ int SEE_KDJ(int           start,
 
   return 0 ;
 }
+} //end namespace

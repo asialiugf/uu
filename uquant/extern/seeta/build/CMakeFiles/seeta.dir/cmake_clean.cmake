@@ -1,12 +1,11 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/seeta.dir/src/seeta.c.o"
+  "CMakeFiles/seeta.dir/src/seeta.cxx.o"
+  "CMakeFiles/seeta.dir/src/seeta.cxx.o.d"
+  "libseeta.a"
   "libseeta.pdb"
-  "libseeta.so"
-  "libseeta.so.1"
-  "libseeta.so.1.0.0"
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang C)
+foreach(lang CXX)
   include(CMakeFiles/seeta.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

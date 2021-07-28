@@ -1,7 +1,7 @@
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/install/strip.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/install/local.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/edit_cache.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/install.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/list_install_components.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/rebuild_cache.dir
-/home/rabbit/uu/ext/seeta/build/CMakeFiles/seeta.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/install/strip.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/install/local.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/edit_cache.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/install.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/list_install_components.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/rebuild_cache.dir
+/home/rabbit/uu/uquant/extern/seeta/build/CMakeFiles/seeta.dir
