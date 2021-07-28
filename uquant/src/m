@@ -1,3 +1,0 @@
-rm ~/u/exe/*x
-make lib
-make
