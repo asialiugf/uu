@@ -10,10 +10,18 @@ target_sources(Dataserver
     ${data_sources}
   )
 
+#include_directories(/home/rabbit/uu/uquant/extern/ctp)
+target_link_directories(Dataserver PUBLIC /home/rabbit/uu/uquant/extern/ctp)
+
 target_link_libraries(Dataserver
-  PRIVATE
-    cJSON
-    uws
+  PUBLIC
+    #thostmduserapi_se
+    mduser 
+    trader
+    #thosttraderapi_se
+    cjson
+    uWS
+    -luuid -lssl -pthread -lz
   )
 
 #message( "-------------------------: ${CMAKE_CURRENT_LIST_DIR}" )

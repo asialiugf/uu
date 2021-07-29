@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.12.0  FATAL_ERROR)
 
 set(LINUX ON)
 set(WIN32 OFF)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 if(LINUX)
 #if(NOT WIN32)
@@ -79,6 +80,17 @@ add_subdirectory (tests)
 #add_subdirectory (utils)
 
 include(./cmake/cJSON.cmake)
+include(./cmake/FinduWS.cmake)
+include(./cmake/Findctp.cmake)
 
 message("ccccccccccccccccc=  ${cJSON_DIR}")
 message("------${CJSON_INCLUDE_DIR}")
+message("cJSON LIB------${CJSON_LIBARY}")
+
+message(" uws:------ ${uWS_INCLUDE_DIR}")
+message(" uws:------ ${uWS_LIBRARY}")
+
+message(" ctp:------ ${ctp_INCLUDE_DIR}")
+message(" ctp:------ ${mduser_LIBRARY}")
+message(" ctp:------ ${trader_LIBRARY}")
+
