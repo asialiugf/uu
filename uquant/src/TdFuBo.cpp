@@ -163,6 +163,7 @@ int sFuBo::DStopLost(int n, double c)
       //todo
     }
   }
+  return 0;
 }
 
 // ------- 止损 ----------------------------
@@ -185,6 +186,7 @@ int sFuBo::StopLost(int n, double c)
       return 0;
     }
   }
+  return 0;
 }
 
 //--------- 止赢 ----------------------------
@@ -221,6 +223,7 @@ int sFuBo::CurrPL(double c)
     cPL = mPL + (c-mMPF-LP)/mMPF*mLot*NL ;
     return 0;
   }
+  return 0;
 } // --------
 
 } //end namespace

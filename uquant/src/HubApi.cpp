@@ -48,6 +48,7 @@ void HubApi::S_onMessage()
     message[length-1] = 0;
     printf("Server onMessage receive: %s\n", message);
     ws->send("nnnnnnnnnn\n", 11, opCode);
+    return 0;
   });
 }
 

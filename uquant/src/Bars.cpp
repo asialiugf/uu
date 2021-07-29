@@ -118,6 +118,7 @@ TmBo::TmBo()
 
 int TmBo::Init(stTimeType TT[])
 {
+ return 0;
 }
 
 /*
@@ -875,6 +876,7 @@ int SaveTick(uBEE::FuBo *fubo, TICK *tick)
            tick->BidPrice1,    tick->BidVolume1,
            tick->OpenInterest, tick->Volume);
   SaveLine(f,ca_errmsg) ;
+  return 0;
 }
 
 
@@ -1132,6 +1134,7 @@ int DispBar(uBEE::FuBo *fubo, TICK *tick,int period,const char*msg)
             b1->v, b1->vsum) ;
     uBEE::ErrLog(1000,ca_errmsg,1,0,0) ;
   }
+   return 0;
 }
 
 int DispKbar(const char *InstrumentID, const char *TradingDay, const char *ActionDay, sKbar * bar)

@@ -120,6 +120,7 @@ int LLongToBit(int64_t     dest[],
     //data[63-*bitx] = 1 ;
     int64_t xorLen =(int64_t)(65-*hzeros-*tzeros) ;
   }
+  return 0;
 }
 
 } //namespace

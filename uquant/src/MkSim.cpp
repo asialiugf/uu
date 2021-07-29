@@ -160,6 +160,7 @@ int FuSim::RunBarsF(int Fr)       // make bars from bars file
     std::cout<< nData->KK[0].cB <<"--"<<nData->KK[0].cE<<" O:"<< nData->KK[0].o << " C:"<< nData->KK[0].c << std::endl;
   } //--while
   file.close();
+  return 0;
 }
 
 
@@ -185,7 +186,7 @@ int FuSim::RunTickBarsF()
            &Tick.BidPrice1, &Tick.BidVolume1,
            &Tick.OpenInterest, &Tick.Volume);
     Tick.UpdateMillisec = Tick.UpdateMillisec/1000;
-    
+
     //int64_t lp1 = (int64_t)Tick.LastPrice * 1000000;
     //int64_t lp2 = (int64_t)TickTemp.LastPrice * 1000000;
     int64_t lp1 = (int64_t)(Tick.Volume) ;
@@ -218,12 +219,15 @@ int FuSim::MkTickBarsF(int Fr)   // make bars from tick file
 
 int FuSim::MkTickT()             // make tick from database tick table
 {
+  return 0;
 }
 int FuSim::MkBarsT(int Fr)       // make bars from database bars table
 {
+  return 0;
 }
 int FuSim::MkTickBarsT(int Fr)   // make bars from database tick table
 {
+  return 0;
 }
 
 void MkSim(uWS::Group<uWS::SERVER> * new_sg)
